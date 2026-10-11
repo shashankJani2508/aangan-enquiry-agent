@@ -80,7 +80,7 @@ import { looksLikeVaani } from "@/lib/vaani";
 describe("unsigned Vaani guard", () => {
   const ok = JSON.stringify({ event: "call_postprocessing", call_id: "r1", data: { call_id: "r1" } });
   it("accepts Vaani's exact shape", () => expect(looksLikeVaani("call_postprocessing", ok)).toBe(true));
-  it("rejects without the header", () => expect(looksLikeVaani(null, ok)).toBe(false));
+  it("accepts without the header (real calls send none)", () => expect(looksLikeVaani(null, ok)).toBe(true));
   it("rejects unknown events", () => expect(looksLikeVaani("lead_spam", ok)).toBe(false));
   it("rejects header/body mismatch", () => expect(looksLikeVaani("call_failed", ok)).toBe(false));
   it("rejects missing call id", () => expect(looksLikeVaani("call_postprocessing", '{"event":"call_postprocessing"}')).toBe(false));
@@ -90,5 +90,13 @@ import { schedulingLink } from "@/lib/calendly";
 describe("Calendly free-plan link", () => {
   it("prefills name and email", () => {
     expect(schedulingLink("https://calendly.com/aangan/consultation", "Rohan Rao", "r@x.com")).toBe("https://calendly.com/aangan/consultation?name=Rohan+Rao&email=r%40x.com");
+  });
+});
+
+describe("real Vaani call (11 Oct 2026)", () => {
+  const body = JSON.stringify({ event: "call_postprocessing", call_id: "outbound-1", to: "+91x", from: "+91y", data: { call_id: "outbound-1", phone_number: "+919800000000", transcript: "[07:45:16] AGENT: Hello, Aangan Studio,\n[07:45:20] USER: Yeah. Tell me about an office." } });
+  it("is accepted without the x-webhook-event header", () => expect(looksLikeVaani(null, body)).toBe(true));
+  it("counts caller words in timestamped transcripts", () => {
+    expect(callerWordCount("[07:45:16] AGENT: Hello, Aangan Studio,\n[07:45:20] USER: Yeah. Tell me about an office.")).toBe(6);
   });
 });

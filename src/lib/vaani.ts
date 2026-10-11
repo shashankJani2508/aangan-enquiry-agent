@@ -106,7 +106,7 @@ export function extractCall(data: Record<string, unknown>): ExtractedCall {
     phone_masked: !!phoneStr && /[*xX•]{2,}/.test(phoneStr),
     transcript: transcriptToText(tr.value),
     summary: sum.value == null ? null : typeof sum.value === "string" ? sum.value : JSON.stringify(sum.value),
-    duration_sec: dur.value == null ? null : Number(dur.value),
+    duration_sec: dur.value == null ? null : Math.round(Number(dur.value)),
     ended_reason: end.value == null ? null : String(end.value),
     started_at: start.value == null ? null : String(start.value),
     cost:
@@ -124,7 +124,9 @@ export function extractCall(data: Record<string, unknown>): ExtractedCall {
 /** Rough count of words the caller said, used for the `no_content` rule. */
 export function callerWordCount(transcript: string | null): number {
   if (!transcript) return 0;
-  const lines = transcript.split("\n").filter((l) => /^(user|caller|customer|human)\s*:/i.test(l.trim()));
+  // Real Vaani lines start with a timestamp: "[07:45:20] USER: ...".
+  const strip = (l: string) => l.trim().replace(/^\[[^\]]*\]\s*/, "");
+  const lines = transcript.split("\n").map(strip).filter((l) => /^(user|caller|customer|human)\s*:/i.test(l));
   const text = lines.length ? lines.map((l) => l.replace(/^[^:]+:/, "")).join(" ") : transcript;
   return text.split(/\s+/).filter(Boolean).length;
 }
@@ -156,10 +158,11 @@ export function verifyUrlKey(url: string, key: string | undefined): boolean {
  */
 const VAANI_EVENTS = new Set(["call_postprocessing", "call_ended", "call_failed", "webhook_test"]);
 export function looksLikeVaani(headerEvent: string | null, raw: string): boolean {
-  if (!headerEvent || !VAANI_EVENTS.has(headerEvent)) return false;
+  // Real calls carry the event only in the body; the dashboard's test button also sends a header.
   try {
     const b = JSON.parse(raw) as Record<string, any>;
-    if (b.event !== headerEvent) return false;
+    if (!VAANI_EVENTS.has(b.event)) return false;
+    if (headerEvent && headerEvent !== b.event) return false;
     if (headerEvent === "webhook_test") return true;
     return typeof (b.call_id ?? b.data?.call_id) === "string";
   } catch {
