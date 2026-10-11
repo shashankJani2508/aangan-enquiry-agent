@@ -6,6 +6,7 @@ import { costReport } from "@/lib/costs";
 import { statusLine, type LeadRow } from "@/lib/status-line";
 import { fmtIST } from "@/lib/time";
 import { Header } from "@/components/header";
+import { TiltCard } from "@/components/tilt-card";
 import { designers } from "@/lib/scheduler";
 import { avatarFor, roleFor, slugOf } from "@/lib/designers-roster";
 
@@ -141,9 +142,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
         )}
       </p>
 
-      <div className="stage big-stage" style={{ position: "relative" }}>
-        <div className="grid-floor" aria-hidden="true" />
-        <section className="card flow slab" aria-label="Where this month's enquiries went">
+      <TiltCard>
           <svg viewBox={`0 0 ${VBW} ${VBH}`} role="img">
             <defs>
               <radialGradient id="core" cx="50%" cy="50%" r="50%">
@@ -192,8 +191,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             <Link key={`hit-${i}`} href={href(bx.v)} className="hit" aria-label={VIEWS[bx.v].label}
               style={{ left: `${(bx.x / VBW) * 100}%`, top: `${(bx.y / VBH) * 100}%`, width: `${(bx.w / VBW) * 100}%`, height: `${(bx.h / VBH) * 100}%` }} />
           ))}
-        </section>
-      </div>
+      </TiltCard>
 
       <div className="cc">
         <section className="card">

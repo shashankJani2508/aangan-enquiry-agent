@@ -79,10 +79,12 @@ pre{white-space:pre-wrap;font-size:13px;font-family:inherit;color:var(--ink)}.mu
 .outcome{margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--gold-soft);color:var(--gold)}
 .checks{display:flex;flex-wrap:wrap;gap:6px}.check{font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid var(--line)}.check.pass{color:var(--q);border-color:rgba(63,208,176,.4)}.check.fail{color:var(--l);border-color:rgba(240,113,120,.4)}.check.unclear{color:var(--m);border-color:rgba(143,167,255,.4)}
 .costrow{padding:12px 0;border-bottom:1px solid var(--line)}.costrow:last-child{border-bottom:0}.costhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}.costhead strong{margin-left:auto;font-size:18px;font-weight:500;color:var(--gold)}.costbar{height:6px;border-radius:99px;background:rgba(255,255,255,.06);margin:8px 0}.costbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--gold))}
+.slab.is-flat{box-shadow:var(--glow)}.flat-toggle{position:absolute;right:8px;top:0;z-index:5;font-size:12px;padding:6px 12px;background:rgba(18,40,36,.9);color:var(--teal);border:1px solid rgba(63,208,176,.4)}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}.slab.floating{animation:bob 7s ease-in-out infinite}
 .big-stage{padding:10px 0 40px}.cc>section:only-child{grid-column:1/-1}
 .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}.fact{padding:12px 14px}.fact span{display:block;color:var(--mute);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em}.fact b{display:block;font-weight:500;margin-top:4px}
 .stage{perspective:1600px;perspective-origin:50% 20%;padding:18px 0 34px}
-.slab{transform:rotateX(16deg) rotateY(-9deg) rotateZ(2deg) scale(.96);transform-style:preserve-3d;
+.slab{transform:rotateX(14deg) rotateY(-8deg) rotateZ(1.5deg) scale(.97);transform-style:preserve-3d;transition:transform .35s ease-out;
 box-shadow:0 1px 0 rgba(160,255,230,.35) inset,0 0 0 1px rgba(63,208,176,.25),0 18px 0 -6px rgba(25,70,62,.9),0 22px 0 -6px rgba(63,208,176,.25),0 60px 80px -20px rgba(0,0,0,.75),0 0 90px rgba(63,208,176,.18)}
 
 .slab::after{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.10),transparent 35%,transparent 70%,rgba(63,208,176,.08))}
