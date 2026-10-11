@@ -1,0 +1,14 @@
+{
+  "_note": "SYNTHETIC fixture built from enquiry T01. NOT a real Vaani payload: field names are guesses until the first test call (brief section 4, item 3).",
+  "id": "evt_sample_t01",
+  "type": "call.completed",
+  "created": "2026-10-10T05:00:00Z",
+  "data": {
+    "call_id": "call_sample_t01",
+    "from": "+919800000001",
+    "duration_seconds": 252,
+    "ended_reason": "caller_hangup",
+    "transcript": "Agent: Good morning, Aangan Studio.\nCaller: Hi, I'm Priya. I got your number from a friend, Shruti Joshi. She had her flat done by you in Aundh.\nAgent: Thank you for calling, Priya. What are you looking to do?\nCaller: We have a 3BHK in Kothrud, Dahanukar Colony. We want to redo the whole thing: kitchen, living room, both bedrooms.\nAgent: How big is the apartment, in carpet area?\nCaller: About 1,400 sq ft carpet.\nAgent: So about fourteen hundred square feet carpet, is that right?\nCaller: Yes.\nAgent: And when would you need the project complete?\nCaller: By March. We're in no rush.\nAgent: Are you the owner?\nCaller: Yes, myself and my husband. He knows we're calling.\nAgent: May I take your email?\nCaller: priya.test@example.com\nAgent: That's p-r-i-y-a dot t-e-s-t at example dot com?\nCaller: Yes.\nAgent: Thank you, I've noted your details and passed them to our team.",
+    "summary": "Priya, referred by Shruti Joshi, wants a full redesign of a 3BHK in Kothrud (about 1,400 sq ft carpet), complete by March. Owner with husband. Email given."
+  }
+}

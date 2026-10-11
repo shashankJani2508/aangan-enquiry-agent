@@ -1,0 +1,24 @@
+{
+  "_source": "context/pricing.md (Aangan Studio Internal Pricing Guide). INTERNAL ESTIMATE ONLY. Never spoken to a caller, never emailed to a caller.",
+  "_area_basis": "Sq ft refers to carpet area of designed space, not built-up area (pricing.md).",
+  "_status": "TODO(owner): Shashank to review this table before it is relied on (brief section 8.2 CHECKPOINT A).",
+  "residential_per_sqft_inr": {
+    "standard": { "low": 1800, "high": 2400 },
+    "premium": { "low": 2400, "high": 3500 },
+    "luxury": { "low": 3500, "high": null }
+  },
+  "residential_single_room_all_in_inr": { "low": 350000, "high": 800000 },
+  "commercial_per_sqft_inr": {
+    "basic": { "low": 1200, "high": 1800 },
+    "mid": { "low": 1800, "high": 2800 },
+    "premium": { "low": 2800, "high": 4000 }
+  },
+  "estimator_rules": {
+    "use_end_of_range": "high",
+    "default_residential_tier": "standard",
+    "default_commercial_tier": "basic",
+    "luxury_without_upper_bound": "unknown",
+    "partial_home_without_designed_area": "unknown",
+    "missing_property_type_or_area": "unknown"
+  }
+}
