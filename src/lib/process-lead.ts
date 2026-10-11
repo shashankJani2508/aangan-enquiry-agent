@@ -312,7 +312,7 @@ export async function processLead(leadId: string): Promise<void> {
   await q("update leads set state=$2, updated_at=now() where id=$1", [leadId, state]);
 }
 
-async function recordEmail(leadId: string, kind: string, to: string[], m: { subject: string; html: string; text: string }, s: Settings, attachments?: { filename: string; content: string }[]) {
+async function recordEmail(leadId: string, kind: string, to: string[], m: { subject: string; html: string; text: string }, s: Settings, attachments?: { filename: string; content: string; contentType?: string }[]) {
   if (!to.length) throw new Error(`no recipient for ${kind} email`);
   const r = await sendEmail({ to, ...m, idempotencyKey: `${leadId}:${kind}`, replyTo: envList("FRONT_DESK_EMAILS"), attachments });
   await q("insert into emails (lead_id, kind, to_email, status, provider_id, error) values ($1,$2,$3,$4,$5,$6)", [leadId, kind, to.join(","), r.status, r.id, r.error]);

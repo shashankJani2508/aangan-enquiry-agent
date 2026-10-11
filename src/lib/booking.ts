@@ -44,11 +44,25 @@ export function inviteFor(b: BookingRow, lead: { caller_name: string | null; cal
     minutes: MEETING_MINUTES,
     title: `Aangan Studio consultation: ${lead.caller_name ?? "client"} with ${b.designer_name}`,
     description: `Free design consultation with Aangan Studio.\nChange or cancel: ${manageUrl(b.id)}`,
-    organizer: b.designer_email,
+    // Organizer must differ from the attendees or Gmail shows "Unable to load event".
+    organizer: (process.env.RESEND_FROM ?? "").match(/<([^>]+)>/)?.[1] ?? "bookings@aangan.studio",
     attendees: [b.designer_email, ...(lead.caller_email ? [lead.caller_email] : [])],
     method,
   });
-  return [{ filename: method === "CANCEL" ? "cancelled.ics" : "invite.ics", content: Buffer.from(ics).toString("base64") }];
+  return [{ filename: method === "CANCEL" ? "cancelled.ics" : "invite.ics", content: Buffer.from(ics).toString("base64"), contentType: `text/calendar; charset=utf-8; method=${method}` }];
+}
+
+/** One-tap "Add to Google Calendar" link, a reliable backup to the .ics attachment. */
+export function gcalLink(b: BookingRow, title: string) {
+  const f = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const start = new Date(b.start_time);
+  const end = new Date(start.getTime() + MEETING_MINUTES * 60_000);
+  const u = new URL("https://calendar.google.com/calendar/render");
+  u.searchParams.set("action", "TEMPLATE");
+  u.searchParams.set("text", title);
+  u.searchParams.set("dates", `${f(start)}/${f(end)}`);
+  u.searchParams.set("details", `Aangan Studio consultation. Change or cancel: ${manageUrl(b.id)}`);
+  return u.toString();
 }
 
 export function callerBookedEmail(lead: { caller_name: string | null }, b: BookingRow) {

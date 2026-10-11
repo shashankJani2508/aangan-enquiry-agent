@@ -10,7 +10,7 @@ export type SendResult = { status: "sent" | "failed" | "dry_run"; id: string | n
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 const list = (xs: string[]) => (xs.length ? `<ul>${xs.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : "<p>Not stated</p>");
 
-export async function sendEmail(args: { to: string[]; subject: string; html: string; text: string; idempotencyKey: string; replyTo?: string[]; attachments?: { filename: string; content: string }[] }): Promise<SendResult> {
+export async function sendEmail(args: { to: string[]; subject: string; html: string; text: string; idempotencyKey: string; replyTo?: string[]; attachments?: { filename: string; content: string; contentType?: string }[] }): Promise<SendResult> {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
   if (!key || !from) return { status: "dry_run", id: null, error: null };
@@ -50,8 +50,11 @@ export function designerEmail(lead: LeadForEmail, booking: { start_time: string;
   const name = show(lead.caller_name);
   const where = show(f?.locality_or_project ?? f?.city);
   const subject = `New consultation: ${name}, ${show(f?.configuration ?? f?.property_type)} in ${where}, ${fmtIST(booking.start_time)}`;
-  const stated = lead.stated_budget_max_inr != null ? `${lakh(lead.stated_budget_min_inr) ?? ""}${lead.stated_budget_min_inr != null ? " to " : ""}${lakh(lead.stated_budget_max_inr)} (${show(f?.budget_phrase)})` : "Not stated";
+  const conv = (lead as any).converted_at ? (lead as any).converted_budget_inr : null;
+  const one = lead.stated_budget_min_inr == null || lead.stated_budget_min_inr === lead.stated_budget_max_inr;
+  const stated = conv != null ? `${lakh(conv)} (budget now, set by the front desk)` : lead.stated_budget_max_inr != null && one ? `${lakh(lead.stated_budget_max_inr)} (${show(f?.budget_phrase)})` : lead.stated_budget_max_inr != null ? `${lakh(lead.stated_budget_min_inr) ?? ""}${lead.stated_budget_min_inr != null ? " to " : ""}${lakh(lead.stated_budget_max_inr)} (${show(f?.budget_phrase)})` : "Not stated";
   const facts: [string, string][] = [
+    ...((lead as any).converted_at ? ([["Lead history", "Was Unqualified on the call; the front desk converted it to Qualified"]] as [string, string][]) : []),
     ["Property", `${show(f?.property_type)} ${f?.configuration ? `(${f.configuration})` : ""}`],
     ["Size", f?.area_sqft ? `${f.area_sqft} sq ft (${f.area_basis})` : "Not stated"],
     ["Location", `${show(f?.locality_or_project)}, ${show(f?.city)}`],
