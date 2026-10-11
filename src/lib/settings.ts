@@ -45,19 +45,20 @@ export const DEFAULT_SETTINGS: Settings = {
     "Other",
   ],
   // Brief section 15: never guess a vendor price. All null until the owner sets them.
+  // Rates filled 11 Oct 2026 at the owner's request; each source is listed in costs.ts (RATE_SOURCES).
   cost_rates: {
-    usd_to_inr: null, // TODO(owner)
-    gemini_usd_per_1m_input_tokens: null, // TODO(owner)
-    gemini_usd_per_1m_output_tokens: null, // TODO(owner)
-    resend_inr_per_email: null, // TODO(owner)
-    vaani_inr_per_minute: null, // TODO(owner)
+    usd_to_inr: 96.83, // exchangerate-api.com, 11 Oct 2026
+    gemini_usd_per_1m_input_tokens: 0.75, // newest Flash price listed (3.5 Flash not on the page)
+    gemini_usd_per_1m_output_tokens: 3.75,
+    resend_inr_per_email: 0, // free plan, 3,000/month
+    vaani_inr_per_minute: 5.6, // Vaani dashboard estimate
   },
   fixed_monthly_costs_inr: {
-    neon: null, // TODO(owner)
-    vercel: null, // TODO(owner)
-    calendly: null, // TODO(owner)
-    vaani_number: null, // TODO(owner)
-    domain: null, // TODO(owner)
+    neon: 0, // free plan via the Vercel integration
+    vercel: 0, // Hobby plan
+    calendly: 0, // not used: booking is built in
+    vaani_number: 0, // no number bought yet
+    domain: 0, // none yet
   },
 };
 

@@ -78,6 +78,8 @@ pre{white-space:pre-wrap;font-size:13px;font-family:inherit;color:var(--ink)}.mu
 .meet b{display:block}.meet small{display:block;color:var(--mute);font-size:12px}.meet em{display:block;font-style:normal;color:var(--teal);font-weight:600;margin-top:4px}
 .outcome{margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--gold-soft);color:var(--gold)}
 .checks{display:flex;flex-wrap:wrap;gap:6px}.check{font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid var(--line)}.check.pass{color:var(--q);border-color:rgba(63,208,176,.4)}.check.fail{color:var(--l);border-color:rgba(240,113,120,.4)}.check.unclear{color:var(--m);border-color:rgba(143,167,255,.4)}
+.costrow{padding:12px 0;border-bottom:1px solid var(--line)}.costrow:last-child{border-bottom:0}.costhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}.costhead strong{margin-left:auto;font-size:18px;font-weight:500;color:var(--gold)}.costbar{height:6px;border-radius:99px;background:rgba(255,255,255,.06);margin:8px 0}.costbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--gold))}
+.big-stage{padding:10px 0 40px}.cc>section:only-child{grid-column:1/-1}
 .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}.fact{padding:12px 14px}.fact span{display:block;color:var(--mute);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em}.fact b{display:block;font-weight:500;margin-top:4px}
 .stage{perspective:1600px;perspective-origin:50% 20%;padding:18px 0 34px}
 .slab{transform:rotateX(16deg) rotateY(-9deg) rotateZ(2deg) scale(.96);transform-style:preserve-3d;
