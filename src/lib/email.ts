@@ -16,7 +16,12 @@ export async function sendEmail(args: { to: string[]; subject: string; html: str
   if (!key || !from) return { status: "dry_run", id: null, error: null };
   // Until the sending domain is verified, only allow-listed test addresses receive mail.
   const allow = (process.env.EMAIL_ALLOWLIST ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
-  if (allow.length && args.to.some((t) => !allow.includes(t.toLowerCase()))) return { status: "failed", id: null, error: "recipient not on EMAIL_ALLOWLIST" };
+  // Testing mode: anyone not on the allow-list is redirected to the first allowed inbox, with the
+  // intended recipient shown in the subject, so the tester sees every email the system sends.
+  if (allow.length && args.to.some((t) => !allow.includes(t.toLowerCase()))) {
+    const meant = args.to.filter((t) => !allow.includes(t.toLowerCase())).map((t) => t.replace(/^(.{3}).*(@.*)$/, "$1…$2")).join(", ");
+    args = { ...args, to: [allow[0]], subject: `[TEST · meant for ${meant}] ${args.subject}`, idempotencyKey: `${args.idempotencyKey}:redirect` };
+  }
   const resend = new Resend(key);
   const { data, error } = await resend.emails.send(
     { from, to: args.to, subject: args.subject, html: args.html, text: args.text, replyTo: args.replyTo, attachments: args.attachments },
