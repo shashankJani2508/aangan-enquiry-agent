@@ -3,7 +3,7 @@
 Vaani moved its dashboard from `app.vaanivoice.ai` to **`platform.vaani.dev`** (same account, same agent id).
 
 ## Agent: `aangan-inbound-enquiries`
-- System prompt: Part 1 of `VAANI_TRAINING_PACK.md` (draft 3), with the two placeholders filled by the proposed defaults:
+- System prompt: Part 1 of `VAANI_TRAINING_PACK.md` (draft 4, English + Hindi), with the two placeholders filled by the proposed defaults:
   greeting rule "Good morning / afternoon / evening, Aangan Studio" and budget question "Do you have a budget in mind for this?". TODO(owner) to confirm.
 - Greeting message (first words, fixed): "Hello, Aangan Studio." A fixed greeting cannot follow the time of day. TODO(owner).
 - LLM: Google `gemini-3.5-flash`, fallback OpenAI `gpt-4o-mini` (Vaani's default fallback "azure" is globally disabled and blocked saving).
@@ -14,8 +14,9 @@ Vaani moved its dashboard from `app.vaanivoice.ai` to **`platform.vaani.dev`** (
 
 ## Webhook: `Aangan backend (Vercel)` (Developers > Webhooks)
 - Events: Call Post-Processing (with "Send all call details"), Call Ended, Call Failed.
-- URL: must be the keyed URL in `VAANI_WEBHOOK_URL.txt` (`.../api/webhooks/vaani?k=...`). Until it is, deliveries are stored in
-  `webhook_captures` (capture mode) but not acted on.
+- URL: `https://<app>/api/webhooks/vaani`. Owner decision (11 Oct 2026): accepted without a key when the request has Vaani's exact
+  shape (`VAANI_ALLOW_UNSIGNED=1`; event name in the body, a call id). The keyed URL in `VAANI_WEBHOOK_URL.txt` also works if you
+  want stronger protection: paste it into the webhook in Vaani.
 
 ## What Vaani actually sends (captured from "Test Connectivity", differs from its API docs)
 - Header `x-webhook-event`; no signature header when no secret is set.
