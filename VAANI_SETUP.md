@@ -1,12 +1,15 @@
-# Vaani setup (done 11 Oct 2026, app.vaanivoice.ai)
+# Vaani setup (done 11 Oct 2026; updated 21 Oct 2026)
+
+Vaani moved its dashboard from `app.vaanivoice.ai` to **`platform.vaani.dev`** (same account, same agent id).
 
 ## Agent: `aangan-inbound-enquiries`
 - System prompt: Part 1 of `VAANI_TRAINING_PACK.md` (draft 3), with the two placeholders filled by the proposed defaults:
   greeting rule "Good morning / afternoon / evening, Aangan Studio" and budget question "Do you have a budget in mind for this?". TODO(owner) to confirm.
 - Greeting message (first words, fixed): "Hello, Aangan Studio." A fixed greeting cannot follow the time of day. TODO(owner).
 - LLM: Google `gemini-3.5-flash`, fallback OpenAI `gpt-4o-mini` (Vaani's default fallback "azure" is globally disabled and blocked saving).
-- Voice: Vaani default (Cartesia "devansh"). Language: English, caller accent "All". TODO(owner): voice and Hindi/Marathi.
-  Choosing the "Indian" accent switches speech to Sarvam (good for Hindi/Marathi) but needs a Sarvam voice added in Voice Lab first.
+- Language (21 Oct 2026): **Hindi, with "English as fallback language" ON**, so the agent understands and speaks both. Vaani set its speech-to-text and voice to its Hindi defaults. Voice: **Arushi** (female, Cartesia sonic-3).
+- The prompt has a full Hindi section ("Language" > "Hindi lines") and a "Your voice" section (female, so Hindi self-references use feminine forms). If the voice is changed to a male one, change "Your voice".
+- Checked in Vaani's Chat test (21 Oct 2026): a Hindi enquiry got Hindi replies; a price question got the Hindi price line with no number; "10 lakh mein ho jayega?" was neither confirmed nor denied; a Nashik site got the Hindi decline reason and Nikhil's decline sentence in Hindi with no email asked; the name question used the feminine "सकती".
 - Not done: phone number. Telephony has no number yet; buying or connecting one is your call (cost).
 
 ## Webhook: `Aangan backend (Vercel)` (Developers > Webhooks)
